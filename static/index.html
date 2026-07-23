@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Athenaeum — Book Recommender</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <canvas id="sky"></canvas>
+  <div class="nebula nebula-a"></div>
+  <div class="nebula nebula-b"></div>
+  <div id="floating-books"></div>
+
+  <div class="app-content">
+
+    <header class="hero">
+      <h1 class="title fade-in">Athenaeum</h1>
+      <p class="subtitle fade-in delay-1">Describe the book you're in the mood for — not a genre, a feeling.</p>
+    </header>
+
+    <form id="search-form" class="fade-in delay-2">
+      <input id="query" type="text" placeholder="a book to teach children about nature..." />
+      <button type="submit">Search</button>
+    </form>
+
+    <p id="stats-line" class="fade-in delay-2"></p>
+
+<div class="suggestions fade-in delay-2">
+  <button type="button" class="chip">a slow-burn romance set in a small town</button>
+  <button type="button" class="chip">a story about grief and letting go</button>
+  <button type="button" class="chip">children learning about the ocean</button>
+  <button type="button" class="chip">a war memoir that isn't about heroics</button>
+</div>
+
+    <div class="carousel-wrap">
+      <button id="prev-btn" class="nav-arrow">‹</button>
+      <div id="results" class="carousel-stage"></div>
+      <button id="next-btn" class="nav-arrow">›</button>
+    </div>
+
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+</html>

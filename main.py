@@ -1,7 +1,7 @@
 from pathlib import Path
 import pandas as pd
 from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
@@ -11,11 +11,27 @@ STATIC_DIR = BASE_DIR / "static"
 books_df = pd.read_csv(CSV_PATH)
 books_df["isbn13"] = books_df["isbn13"].astype(str)
 
+
+import requests
+
+class HFInferenceEmbeddings:
+    def __init__(self, api_token, model_name="sentence-transformers/all-MiniLM-L6-v2"):
+        self.api_url = f"https://api-inference.huggingface.co/pipeline/feature-extraction/{model_name}"
+        self.headers = {"Authorization": f"Bearer {api_token}"}
+
+    def embed_query(self, text):
+        response = requests.post(self.api_url, headers=self.headers, json={"inputs": text})
+        return response.json()
+
+    def embed_documents(self, texts):
+        return [self.embed_query(t) for t in texts]
+
 CATEGORIES = sorted(
     c for c in books_df["categories"].dropna().unique().tolist() if isinstance(c, str)
 )
-
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+import os
+embeddings = HFInferenceEmbeddings(api_token=os.environ["HF_API_TOKEN"])
+#embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 db_books = Chroma(
     persist_directory=str(CHROMA_DIR),

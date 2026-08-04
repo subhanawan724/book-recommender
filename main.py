@@ -14,14 +14,15 @@ books_df["isbn13"] = books_df["isbn13"].astype(str)
 
 import requests
 
+from huggingface_hub import InferenceClient
+
 class HFInferenceEmbeddings:
     def __init__(self, api_token, model_name="sentence-transformers/all-MiniLM-L6-v2"):
-        self.api_url = f"https://api-inference.huggingface.co/pipeline/feature-extraction/{model_name}"
-        self.headers = {"Authorization": f"Bearer {api_token}"}
+        self.client = InferenceClient(token=api_token, model=model_name)
 
     def embed_query(self, text):
-        response = requests.post(self.api_url, headers=self.headers, json={"inputs": text})
-        return response.json()
+        result = self.client.feature_extraction(text)
+        return result.tolist()
 
     def embed_documents(self, texts):
         return [self.embed_query(t) for t in texts]

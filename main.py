@@ -1,7 +1,7 @@
 from pathlib import Path
 import pandas as pd
 from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
